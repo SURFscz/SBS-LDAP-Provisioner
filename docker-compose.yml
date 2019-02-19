@@ -6,7 +6,7 @@ services:
     build: .
     volumes:
       - ${PWD}/provisioner.py:/usr/local/bin/provisioner.py
-      - ${PWD}/event.py:/usr/local/bin/event.py
+      - ${PWD}/scheduler.py:/usr/local/bin/scheduler.py
       - ${PWD}/etc:/etc/supervisor/conf.d
     environment:
       API_USER: ${API_USER}
