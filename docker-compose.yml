@@ -1,0 +1,22 @@
+version: "2"
+
+services:
+
+  provisioner:
+    build: .
+    volumes:
+      - ${PWD}/provisioner.py:/usr/local/bin/provisioner.py
+      - ${PWD}/event.py:/usr/local/bin/event.py
+      - ${PWD}/etc:/etc/supervisor/conf.d
+    environment:
+      API_USER: ${API_USER}
+      API_PASS: ${API_PASS}
+
+      SBS_HOST: ${SBS_HOST}
+      PUBLISHER_PORT: ${PUBLISHER_PORT}
+
+      BASE_DN: ${BASE_DN}
+
+      LDAP_HOST: ${LDAP_HOST}
+      LDAP_USERNAME: ${LDAP_USERNAME}
+      LDAP_PASSWORD: ${LDAP_PASSWORD}
