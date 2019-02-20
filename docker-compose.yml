@@ -9,6 +9,8 @@ services:
       - ${PWD}/scheduler.py:/usr/local/bin/scheduler.py
       - ${PWD}/etc:/etc/supervisor/conf.d
     environment:
+      LOG_LEVEL: ${LOG_LEVEL}
+      
       API_USER: ${API_USER}
       API_PASS: ${API_PASS}
 

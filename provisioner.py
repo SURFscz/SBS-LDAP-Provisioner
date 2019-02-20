@@ -15,16 +15,19 @@ from requests.auth import HTTPBasicAuth
 
 from colorama import Fore, Back, Style
 
+import logging
+
+logging.basicConfig(level=os.environ.get("LOG_LEVEL", 'ERROR').upper())
+
 # CONSTANTS
 
-SBS_HOST = os.environ.get("SBS_HOST", "https://sbs.exp.scz.lab.surf.nl")
+SBS_HOST = os.environ.get("SBS_HOST", "https://sbs.example.org")
 PUBLISHER_PORT = os.environ.get("PUBLISHER_PORT", "5556")
 
 BASE_DN = os.environ.get("BASE_DN", "ou=sbs,dc=example,dc=org")
 
-LDAP_HOST = os.environ.get("LDAP_HOST", "ldap.exp.scz.lab.surf.nl")
-#LDAP_USERNAME = os.environ.get("LDAP_USERNAME", f"cn=admin,{BASE_DN}")
-LDAP_USERNAME = os.environ.get("LDAP_USERNAME", "cn=admin")
+LDAP_HOST = os.environ.get("LDAP_HOST", "ldap.example.org")
+LDAP_USERNAME = os.environ.get("LDAP_USERNAME", f"cn=admin,{BASE_DN}")
 LDAP_PASSWORD = os.environ.get("LDAP_PASSWORD", None)
 
 API_USER = os.environ.get("API_USER", "sysadmin")
@@ -37,25 +40,21 @@ def timestamp():
 	return datetime.datetime.now().strftime("%d.%b %Y %H:%M:%S")
 
 def log_error(s):
-	log(Fore.RED+Style.BRIGHT+'['+timestamp()+']: '+Style.NORMAL+s+Fore.RESET)
+	logging.error(Fore.RED+Style.BRIGHT+'['+timestamp()+']: '+Style.NORMAL+s+Fore.RESET)
 
 def log_warning(s):
-	log(Fore.YELLOW+s+Fore.RESET)
+	logging.warning(Fore.YELLOW+s+Fore.RESET)
 
 def log_info(s):
-	log(Fore.GREEN+s+Fore.RESET)
+	logging.info(Fore.GREEN+s+Fore.RESET)
 
 def log_debug(s):
-	log(Fore.MAGENTA+s+Fore.RESET)
+	logging.debug(Fore.MAGENTA+s+Fore.RESET)
 
 def log_json(data, title=None):
 	if title:
 		log_info(title)
 	log_info(json.dumps(data, indent=4, sort_keys=True))
-
-def panic(s):
-	log_error(s)
-	sys.exit(1)
 
 def get_json(string, title=None):
 	data = json.loads(string)
@@ -65,6 +64,10 @@ def get_json(string, title=None):
 def put_json(data, title=None):
 	log_json(data, title)
 	return json.dumps(data)
+
+def panic(s):
+	log_error(s)
+	sys.exit(1)
 
 # 0MQ - part
 
